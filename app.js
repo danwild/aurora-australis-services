@@ -6,89 +6,89 @@ var http = require('http-request');
 var app = express();
 var port = process.env.PORT || 3000;
 
-var noaaPoleTime = 60000;
-var solarWindMagData;
-var solarWindPlasmaData;
-var wingKpData;
-var wingKpTxt = 'data/txt/wing-kp.txt';
+// LOAD SERVICE CONFIG
+var config = require('./config.json');
+
 
 var noaaPoling = setInterval(function(){
 
-	request('http://services.swpc.noaa.gov/experimental/products/solar-wind/mag-5-minute.json', function (error, response, body) {
+	// JSON POLLING
+	for(var i = 0; i < config.jsonEndpoints.length; i++){
 
-		if (!error && response.statusCode == 200) {
-			console.log(body); // Show the HTML
-			solarWindMagData = body;
-		}
-		else {
-			console.log(error);
-			solarWindMagData = error;
-		}
-	});
+		var service = config.jsonEndpoints[i];
 
-	request('http://services.swpc.noaa.gov/experimental/products/solar-wind/plasma-5-minute.json', function (error, response, body) {
+		request(service.url, function (error, response, body) {
 
-		if (!error && response.statusCode == 200) {
-			console.log(body); // Show the HTML
-			solarWindPlasmaData = body;
-		}
-		else {
-			console.log(error);
-			solarWindPlasmaData = error;
-		}
-	});
-
-	http.get({
-
-		url: 'http://services.swpc.noaa.gov/text/wing-kp.txt',
-			progress: function (current, total) {
-				console.log('downloaded %d bytes from %d', current, total);
-			}
-		},
-		wingKpTxt, function (err, res) {
-
-			if (err) {
-				console.error(err);
-				return;
-			}
-
-			// files are always small, so we'll just take the lot
-			fs.readFile(wingKpTxt, {
-					encoding: 'UTF-8'
-			},
-
-			function (err, file) {
-
-				if (err) throw err;
-				var fileArr = file.toString().split(/\r?\n/);
-				var jsonOut = fs.createWriteStream('data/json/wing-kp.json');
-				var outData = [];
-
-				for(var i = 0; i < fileArr.length; i++){
-
-					// strip head and split into array
-					var lineOut = parseLineTxt(fileArr[i]);
-					if(lineOut && lineOut.length > 1){
-						outData.push(lineOut);
-					}
-				}
-
-				jsonOut.write(JSON.stringify(outData));
+			if (!error && response.statusCode == 200) {
+				console.log(body);
+				var jsonOut = fs.createWriteStream('data/json/'+ service.name +'.json');
+				jsonOut.write(body);
 				jsonOut.on('error', function(err) { console.log(err); });
 				jsonOut.end();
-				console.log("done!");
+			}
+			else {
+				console.log(error);
+			}
+		});
+	}
+
+	// TXT POLLING
+	for(var i = 0; i < config.txtEndpoints.length; i++){
+
+		var service = config.txtEndpoints[i];
+
+		http.get({
+
+				url: service.url,
+				progress: function (current, total) {
+					console.log('downloaded %d bytes from %d', current, total);
+				}
+			},
+			'data/txt/' + service.name + service.extension, function (err, res) {
+
+				if (err) {
+					console.error(err);
+					return;
+				}
+
+				// these logs are always going to be small, so we'll just wop the lot
+				fs.readFile('data/txt/' + service.name + service.extension, {
+						encoding: 'UTF-8'
+					},
+
+					function (err, file) {
+
+						if (err) throw err;
+						var fileArr = file.toString().split(/\r?\n/);
+						var jsonOut = fs.createWriteStream('data/json/' + service.name + '.json');
+						var outData = [service.headers];
+
+						for(var i = 0; i < fileArr.length; i++){
+
+							// strip head and split into array
+							var lineOut = parseLineTxt(fileArr[i]);
+							if(lineOut && lineOut.length > 1){
+								outData.push(lineOut);
+							}
+						}
+
+						jsonOut.write(JSON.stringify(outData));
+						jsonOut.on('error', function(err) { console.log(err); });
+						jsonOut.end();
+						console.log("done!");
+					});
+
 			});
+	}
 
-	});
+}, config.pollingIntervals.NOAA);
 
-}, noaaPoleTime);
 
 function parseLineTxt(line){
 
 	if(line.substr(0, 1) != '#' && line.substr(0, 1) != ':'){
 
 		var lineOut = [];
-
 		// split into cells and clean
 		var lineArr = line.split(" ");
 		for(var i = 0; i < lineArr.length; i++){
@@ -102,18 +102,9 @@ function parseLineTxt(line){
 	}
 }
 
-app.get('/solar-wind/mag', function(req, res){
-	res.send(solarWindMagData);
-});
+app.all('/*', function(req, res){
 
-app.get('/solar-wind/plasma', function(req, res){
-	res.send(solarWindPlasmaData);
-});
-
-// TODO this to handle generic rest reqs
-app.get('/solar-wind/wing-kp', function(req, res){
-
-	var fileName = __dirname +"/data/json/wing-kp.json";
+	var fileName = __dirname +"/data/json"+ req.url +".json";
 	res.setHeader('Content-Type', 'application/json');
 	res.sendFile(fileName, {}, function (err) {
 		if (err) {
