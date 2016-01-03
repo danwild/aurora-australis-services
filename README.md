@@ -1,2 +1,2 @@
 # aurora-australis-services
-A simple nodejs REST service to expose realtime space weather data.
+A nodejs REST service to expose realtime space weather data.

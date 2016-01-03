@@ -1,0 +1,35 @@
+{
+  "name": "aurora-australis-services",
+  "version": "0.0.1",
+  "description": "A nodejs REST service to expose realtime space weather data.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danwild/aurora-australis-services.git"
+  },
+  "keywords": [
+    "aurora",
+    "nodejs",
+    "express",
+    "rest"
+  ],
+  "author": "danwild@y7mail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danwild/aurora-australis-services/issues"
+  },
+  "homepage": "https://github.com/danwild/aurora-australis-services#readme",
+  "dependencies": {
+    "asciiparse": "^0.1.1",
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "http": "0.0.0",
+    "http-request": "^0.7.0",
+    "mongoose": "^4.3.4",
+    "nodemon": "^1.8.1",
+    "request": "^2.67.0"
+  }
+}
