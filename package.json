@@ -25,8 +25,8 @@
   "dependencies": {
     "asciiparse": "^0.1.1",
     "express": "^4.13.3",
+    "forever": "^0.15.1",
     "gulp": "^3.9.0",
-    "http": "0.0.0",
     "http-request": "^0.7.0",
     "mongoose": "^4.3.4",
     "nodemon": "^1.8.1",

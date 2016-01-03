@@ -1,7 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var request = require('request');
-var http = require('http-request');
+var httpRequest = require('http-request');
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -37,7 +37,7 @@ var noaaPoling = setInterval(function(){
 
 		var service = config.txtEndpoints[i];
 
-		http.get({
+		httpRequest.get({
 
 				url: service.url,
 				progress: function (current, total) {
