@@ -2,11 +2,9 @@ var express = require('express');
 var fs = require('fs');
 var request = require('request');
 var http = require('http-request');
-var asciiparse = require('asciiparse');
 
 var app = express();
 var port = process.env.PORT || 3000;
-
 
 var noaaPoleTime = 60000;
 var solarWindMagData;
@@ -83,12 +81,7 @@ var noaaPoling = setInterval(function(){
 
 	});
 
-
-
 }, noaaPoleTime);
-
-
-
 
 function parseLineTxt(line){
 

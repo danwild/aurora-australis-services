@@ -1,0 +1,48 @@
+{
+  "pollingIntervals": {
+	"NOAA": 60000
+  },
+  "jsonEndpoints": [
+	{
+	  "label": "Plasma - ACE Live Solar Wind",
+	  "url": "http://services.swpc.noaa.gov/experimental/products/solar-wind/plasma-5-minute.json",
+	  "provider": "NOAAA",
+	  "metrics": ["Time,", "Density", "Speed", "Temp"],
+	  "headers":[
+		"time_tag",
+		"density",
+		"speed",
+		"temperature"
+	  ]
+	},
+	{
+	  "label": "Magnetic - ACE Live Solar Wind",
+	  "url": "http://services.swpc.noaa.gov/experimental/products/solar-wind/mag-5-minute.json",
+	  "provider": "NOAAA",
+	  "metrics": ["Time,", "Bx", "By", "Bz", "Lon", "Lat", "Bt"],
+	  "headers":[
+		"time_tag",
+		"bx_gsm",
+		"by_gsm",
+		"bz_gsm",
+		"lon_gsm",
+		"lat_gsm",
+		"bt"
+	  ]
+	}
+  ],
+  "txtEndpoints": [
+	{
+	  "label": "Wing Kp - 1 Hr Predicted Activity Index",
+	  "url": "http://services.swpc.noaa.gov/text/wing-kp.txt",
+	  "provider": "NOAAA",
+	  "metrics": ["Time,", "Kp"],
+	  "headers":[
+		"CURR_YR", "CURR_MO", "CURR_DA", "CURR_HHMM",
+		"1HR_YR", "1HR_MO", "1HR_DA", "1HR_HHMM", "1HR_Index",
+		"4HR_YR", "4HR_MO", "4HR_DA", "4HR_HHMM", "4HR_Index",
+		"USAF_Kp"
+	  ]
+	}
+  ]
+}
