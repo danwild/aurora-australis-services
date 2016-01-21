@@ -1,6 +1,6 @@
 {
   "pollingIntervals": {
-	"NOAA": 60000
+	"NOAA": 10000
   },
   "jsonEndpoints": {
 	"plasma": {
@@ -49,6 +49,7 @@
 	}
   },
   "txtEndpoints": {
+
 	"wingKp": {
 	  "name": "wing-kp",
 	  "label": "Wing Kp - 1 Hr Predicted Activity Index",
@@ -74,6 +75,55 @@
 		"4HR_HHMM",
 		"4HR_Index",
 		"USAF_Kp"
+	  ],
+	  "extension": ".txt"
+	},
+
+	"aceMag": {
+	  "name": "ace-mag",
+	  "label": "Ace Magnetometer - Real-Time Data",
+	  "url": "http://services.swpc.noaa.gov/text/ace-magnetometer.txt",
+	  "provider": "NOAAA",
+	  "metrics": [
+
+	  ],
+	  "headers": [
+		"CURR_YR",
+		"CURR_MO",
+		"CURR_DA",
+		"CURR_HHMM",
+		"MOD_JUL_DAY",
+		"SEC_OF_DAY",
+		"S",
+		"Bx",
+		"By",
+		"Bz",
+		"Bt",
+		"Lat",
+		"Lon"
+	  ],
+	  "extension": ".txt"
+	},
+
+	"aceSwepam": {
+	  "name": "ace-swepam",
+	  "label": "SWEPAM - Ace Real-Time Data",
+	  "url": "http://services.swpc.noaa.gov/text/ace-swepam.txt",
+	  "provider": "NOAAA",
+	  "metrics": [
+
+	  ],
+	  "headers": [
+		"CURR_YR",
+		"CURR_MO",
+		"CURR_DA",
+		"CURR_HHMM",
+		"MOD_JUL_DAY",
+		"SEC_OF_DAY",
+		"S",
+		"DENSITY",
+		"SPEED",
+		"TEMP"
 	  ],
 	  "extension": ".txt"
 	}
