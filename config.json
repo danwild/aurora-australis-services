@@ -1,6 +1,6 @@
 {
   "pollingIntervals": {
-	"NOAA": 10000
+	"NOAA": 60000
   },
   "jsonEndpoints": {
 	"plasma": {
